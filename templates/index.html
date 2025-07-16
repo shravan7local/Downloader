@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downloader - YouTube & Instagram</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center justify-center text-gray-800 font-sans">
+  <header class="absolute top-0 left-0 w-full bg-indigo-600 text-white p-4 shadow-md flex justify-between">
+    <h1 class="font-bold text-xl">Downloader</h1>
+    <nav class="space-x-4">
+      <a href="about.html" class="hover:underline">About</a>
+      <a href="privacy.html" class="hover:underline">Privacy</a>
+      <a href="terms.html" class="hover:underline">Terms</a>
+      <a href="contact.html" class="hover:underline">Contact</a>
+    </nav>
+  </header>
+
+  <main class="p-6 mt-24 max-w-xl w-full text-center">
+    <h2 class="text-3xl font-bold mb-4">📥 Download Videos Easily</h2>
+    <p class="text-md text-gray-600 mb-6">Paste your YouTube or Instagram video link below and click download.</p>
+    <form id="download-form" class="flex flex-col sm:flex-row items-center gap-4">
+      <input type="url" placeholder="Paste your link here..." required class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition">Download</button>
+    </form>
+    <p class="text-xs text-gray-500 mt-4">Note: For demonstration only. Downloading copyrighted content is not allowed.</p>
+  </main>
+
+  <footer class="mt-10 py-4 text-center text-gray-500 text-sm">
+    &copy; 2025 Downloader. All rights reserved.
+  </footer>
+
+  <script>
+document.getElementById('download-form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const url = document.querySelector('input[type="url"]').value;
+
+  const response = await fetch('/download', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url })
+  });
+
+  if (response.ok) {
+    const blob = await response.blob();
+    const a = document.createElement('a');
+    a.href = window.URL.createObjectURL(blob);
+    a.download = 'video.mp4';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } else {
+    const data = await response.json();
+    alert('❌ Error: ' + data.error);
+  }
+});
+</script>
+</body>
+</html>
