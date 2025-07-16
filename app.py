@@ -23,6 +23,7 @@ def download():
                 'outtmpl': tmp_file.name,
                 'format': 'best',
                 'quiet': True,
+                'cookies':'all_cookies.txt'
             }
 
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
